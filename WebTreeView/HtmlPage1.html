@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Estructura Jerárquica</title>
+    <style>
+        ul {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Estructura Jerárquica</h1>
+    <ul id="item-list"></ul>
+
+    <script>
+      // Función para construir la estructura jerárquica
+      function buildHierarchy(items, parentElement) {
+        var ul = document.createElement("ul");
+
+        items.forEach(function (item) {
+          var li = document.createElement("li");
+          li.textContent = item.name;
+
+          if (item.children.length > 0) {
+            buildHierarchy(item.children, li);
+          }
+
+          ul.appendChild(li);
+        });
+
+        parentElement.appendChild(ul);
+      }
+
+      // Leer el archivo JSON y construir la estructura
+      fetch("items.json")
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          var itemList = document.getElementById("item-list");
+          buildHierarchy(data.children, itemList);
+        })
+        .catch(function (error) {
+          console.log("Error al leer el archivo JSON: ", error);
+        });
+    </script>
+</body>
+</html>
